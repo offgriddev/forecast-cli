@@ -1,0 +1,59 @@
+{
+  "name": "forecast-cli",
+  "description": "Forecast CLI is a metrics-based estimation tool used to predict a deadline for roadmap items based on the affect code changes have on the complexity of a system.",
+  "version": "0.0.2",
+  "main": "lib/action/main.js",
+  "license": "MIT",
+  "engines": {
+    "node": "^18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/offgriddev/forecast-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/offgriddev/forecast-cli/issues"
+  },
+  "author": {
+    "name": "Jesse Anderson",
+    "url": "https://github.com/offgriddev"
+  },
+  "scripts": {
+    "cli": "ts-node src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "changeset": "changeset",
+    "release": "changeset publish"
+  },
+  "homepage": "https://github.com/offgriddev/forecast-cli#readme",
+  "dependencies": {
+    "commander": "^10.0.0",
+    "date-fns": "^2.30.0",
+    "date-fns-timezone": "^0.1.4",
+    "lodash.groupby": "^4.6.0",
+    "typescript": "^5.0.4",
+    "undici": "^5.22.0"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.1",
+    "@types/jest": "^29.5.1",
+    "@types/lodash.groupby": "^4.6.7",
+    "@types/node": "^18.15.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-github": "^4.7.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.7",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1"
+  },
+  "bin": {
+    "forecast": "dist/index.js"
+  }
+}

@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - next
+      - next-major
+      - alpha
+      - beta
+      # N.x (maintenance release branches)
+      - '[0-9]+.x'
+
+concurrency:
+  group: release-${{ github.ref }}
+
+env:
+  NODE_VERSION: 18.x
+
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Setup credentials
+        shell: bash
+        id: 'setup-credentials'
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.PUBLISH_TOKEN }}" >> .npmrc
+          echo "@rss-engineering:registry=https://npm.pkg.github.com" >> .npmrc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # not yet
+      #      - name: Test
+      #        run: yarn test --coverage --silent
+
+      - name: Build
+        run: npm run build
+
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          publish: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
